@@ -80,7 +80,7 @@ export const reactClass = connect(state => ({
         for (let j = 0; j < 1000000; j++) {
             if (equips[j]) {
                 const equip = equips[j];
-                result += `{"id":${equip.api_slotitem_id},"lv":${equip.api_level},`
+                result += `{"id":${equip.api_slotitem_id},"lv":${equip.api_level}},`
             }
         }
         if (result.charAt(result.length - 1) == ',') {
@@ -112,7 +112,7 @@ export const reactClass = connect(state => ({
                 if(equip.api_locked == "0") {
                     continue;
                 }
-                result += `{"id":${equip.api_slotitem_id},"lv":${equip.api_level},`
+                result += `{"id":${equip.api_slotitem_id},"lv":${equip.api_level}},`
             }
         }
         if (result.charAt(result.length - 1) == ',') {
