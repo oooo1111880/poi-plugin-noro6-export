@@ -11,7 +11,7 @@
         "type": "git",
         "url": "https://github.com/oooo1111880/poi-plugin-noro6export"
     },
-    "keywords": ["poi","kancolle","plugin","noro6export"],
+    "keywords": ["poi","kancolle","poi-plugin","noro6export"],
     "license": "MIT",
     "poiPlugin": {
         "title": "艦娘 / 装備管理",
