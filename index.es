@@ -10,23 +10,31 @@ export const reactClass = connect(state => ({
 
     state = { result: "" };
 
+    //艦娘資料輸出(包含未上鎖)
+    //另3function程式碼大致相同
     exportShipsAll = () => {
+        //讀取資料
         const ships = this.props.ships;
-        const equips = this.props.equips;
         let result = `[`;
+        //獲得編號總數
+        const len = Object.keys(ships).pop();
 
-        for (let j = 0; j < 1000000; j++) {
+        for (let j = 0; j <= len; j++) {
             if (ships[j]) {
                 const ship = ships[j];
+                //輸出艦船詳細資料
                 result += `{"id":${ship.api_ship_id},"lv":${ship.api_lv},"st":[${ship.api_kyouka}],"exp":[${ship.api_exp}],"ex":${ship.api_slot_ex},"area":${ship.api_sally_area}},`;
             }
         }
+
+        //去除逗號並加上後括號
         if (result.charAt(result.length - 1) == ',') {
             result = result.slice(0, result.length - 1)
         }
         result += `]`
         this.setState({ result })
-        
+
+        //複製到剪貼簿
         const content = document.createElement('input'),
         text = result;
         document.body.appendChild(content);
@@ -39,15 +47,16 @@ export const reactClass = connect(state => ({
     }
 
 
-    
+    //艦娘資料輸出(不包含未上鎖)
     exportShipsLocked = () => {
         const ships = this.props.ships;
-        const equips = this.props.equips;
         let result = `[`;
+        const len = Object.keys(ships).pop();
 
-        for (let j = 0; j < 1000000; j++) {
+        for (let j = 0; j <= len; j++) {
             if (ships[j]) {
                 const ship = ships[j];
+                //未上鎖船艦跳過
                 if(ship.api_locked == "0") {
                     continue;
                 }
@@ -72,12 +81,13 @@ export const reactClass = connect(state => ({
     }
 
 
-
+    //裝備資料輸出(包含未上鎖)
     exportequipsAll = () => {
         const equips = this.props.equips;
         let result = `[`;
+        const len = Object.keys(equips).pop();
 
-        for (let j = 0; j < 1000000; j++) {
+        for (let j = 0; j <= len; j++) {
             if (equips[j]) {
                 const equip = equips[j];
                 result += `{"id":${equip.api_slotitem_id},"lv":${equip.api_level}},`
@@ -101,12 +111,13 @@ export const reactClass = connect(state => ({
     }
 
 
-
+    //裝備資料輸出(不包含未上鎖)
     exportequipsLocked = () => {
         const equips = this.props.equips;
         let result = `[`;
+        const len = Object.keys(equips).pop();
 
-        for (let j = 0; j < 1000000; j++) {
+        for (let j = 0; j < len; j++) {
             if (equips[j]) {
                 const equip = equips[j];
                 if(equip.api_locked == "0") {
@@ -133,7 +144,7 @@ export const reactClass = connect(state => ({
     }
 
 
-
+    //原本想直接傳至網址，還沒搞定
     exportNoro6ShipsAll = () => {
         const result = this.exportShipsAll()
         shell.openExternal(`https://noro6.github.io/kc-web/?predeck=${result}`)

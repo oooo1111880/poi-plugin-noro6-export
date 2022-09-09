@@ -1,6 +1,6 @@
 {
     "name": "poi-plugin-noro6-export",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "main": "main.js",
     "description": "a plugin export ships and equips to noro6",
     "author": {
@@ -11,7 +11,7 @@
         "type": "git",
         "url": "https://github.com/oooo1111880/poi-plugin-noro6-export"
     },
-    "keywords": ["poi","kancolle","poi-plugin","noro6-export"],
+    "keywords": ["poi","kancolle","poi-plugin","noro6export"],
     "license": "MIT",
     "poiPlugin": {
         "title": "艦娘 / 装備管理",
