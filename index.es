@@ -3,6 +3,36 @@ import { Button, TextArea, ButtonGroup, Icon } from "@blueprintjs/core";
 import { connect } from 'react-redux'
 import { shell } from 'electron'
 export const windowMode = false;
+
+const parseShip = (ship) => {
+    let tempObj =
+    {
+        "id": ship.api_ship_id,
+        "lv": ship.api_lv,
+        "st": [ship.api_kyouka],
+        "exp": [ship.api_exp],
+        "ex": ship.api_slot_ex
+    }
+
+    if (ship.api_sally_area) {
+        tempObj.area = ship.api_sally_area
+    }
+
+    return tempObj;
+}
+
+const copyToClipboard = (result) => {
+    const content = document.createElement('input'),
+        text = result;
+    document.body.appendChild(content);
+    content.value = text;
+    content.select();
+    document.execCommand('copy');
+    document.body.removeChild(content);
+}
+
+
+
 export const reactClass = connect(state => ({
     ships: state.info.ships,
     equips: state.info.equips
@@ -15,34 +45,17 @@ export const reactClass = connect(state => ({
     exportShipsAll = () => {
         //讀取資料
         const ships = this.props.ships;
-        let result = `[`;
-        //獲得編號總數
-        const len = Object.keys(ships).pop();
-
-        for (let j = 0; j <= len; j++) {
-            if (ships[j]) {
-                const ship = ships[j];
-                //輸出艦船詳細資料
-                result += `{"id":${ship.api_ship_id},"lv":${ship.api_lv},"st":[${ship.api_kyouka}],"exp":[${ship.api_exp}],"ex":${ship.api_slot_ex},"area":${ship.api_sally_area}},`;
-            }
-        }
-
-        //去除逗號並加上後括號
-        if (result.charAt(result.length - 1) == ',') {
-            result = result.slice(0, result.length - 1)
-        }
-        result += `]`
-        this.setState({ result })
+        let result = []
+        Object.keys(ships).forEach((key) => {
+            const ship = ships[key]
+            result.push(parseShip(ship))
+        })
+        let strResult = JSON.stringify(result)
+        this.setState({ strResult })
 
         //複製到剪貼簿
-        const content = document.createElement('input'),
-        text = result;
-        document.body.appendChild(content);
-        content.value = text;
-        content.select();
-        document.execCommand('copy');
-        document.body.removeChild(content);
-        
+        copyToClipboard(strResult)
+
         return result;
     }
 
@@ -50,33 +63,20 @@ export const reactClass = connect(state => ({
     //艦娘資料輸出(不包含未上鎖)
     exportShipsLocked = () => {
         const ships = this.props.ships;
-        let result = `[`;
-        const len = Object.keys(ships).pop();
+        let result = []
+        Object.values(ships)
+            .filter(ship => {
+                return ship.api_locked == "1"
+            }).forEach(ship => {
+                result.push(parseShip(ship))
+            })
 
-        for (let j = 0; j <= len; j++) {
-            if (ships[j]) {
-                const ship = ships[j];
-                //未上鎖船艦跳過
-                if(ship.api_locked == "0") {
-                    continue;
-                }
-                result += `{"id":${ship.api_ship_id},"lv":${ship.api_lv},"st":[${ship.api_kyouka}],"exp":[${ship.api_exp}],"ex":${ship.api_slot_ex},"area":${ship.api_sally_area}},`;
-            }
-        }
-        if (result.charAt(result.length - 1) == ',') {
-            result = result.slice(0, result.length - 1)
-        }
-        result += `]`
-        this.setState({ result })
-        
-        const content = document.createElement('input'),
-        text = result;
-        document.body.appendChild(content);
-        content.value = text;
-        content.select();
-        document.execCommand('copy');
-        document.body.removeChild(content);
-        
+        let strResult = JSON.stringify(result)
+        this.setState({ strResult })
+
+        //複製到剪貼簿
+        copyToClipboard(strResult)
+
         return result;
     }
 
@@ -98,15 +98,9 @@ export const reactClass = connect(state => ({
         }
         result += `]`
         this.setState({ result })
-        
-        const content = document.createElement('input'),
-        text = result;
-        document.body.appendChild(content);
-        content.value = text;
-        content.select();
-        document.execCommand('copy');
-        document.body.removeChild(content);
-        
+
+        copyToClipboard(result)
+
         return result;
     }
 
@@ -120,7 +114,7 @@ export const reactClass = connect(state => ({
         for (let j = 0; j < len; j++) {
             if (equips[j]) {
                 const equip = equips[j];
-                if(equip.api_locked == "0") {
+                if (equip.api_locked == "0") {
                     continue;
                 }
                 result += `{"id":${equip.api_slotitem_id},"lv":${equip.api_level}},`
@@ -132,13 +126,7 @@ export const reactClass = connect(state => ({
         result += `]`
         this.setState({ result })
 
-        const content = document.createElement('input'),
-        text = result;
-        document.body.appendChild(content);
-        content.value = text;
-        content.select();
-        document.execCommand('copy');
-        document.body.removeChild(content);
+        copyToClipboard(result)
 
         return result;
     }
@@ -173,22 +161,22 @@ export const reactClass = connect(state => ({
             <div>
                 <h2>艦娘、装備情報</h2>
                 <h5>(按下按鈕後可直接至反映貼上)</h5>
-                <br/>
+                <br />
                 <Button onClick={this.exportShipsAll}>
                     艦娘 : 未ロックも含める
                 </Button>
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <Button onClick={this.exportShipsLocked}>
                     艦娘 : ロック済みのみ&nbsp;&nbsp;&nbsp;
                 </Button>
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <Button onClick={this.exportequipsAll}>
                     裝備 : 未ロックも含める
                 </Button>
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <Button onClick={this.exportequipsLocked}>
                     裝備 : ロック済みのみ&nbsp;&nbsp;&nbsp;
                 </Button>
