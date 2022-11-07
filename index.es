@@ -9,8 +9,8 @@ const parseShip = (ship) => {
     {
         "id": ship.api_ship_id,
         "lv": ship.api_lv,
-        "st": [ship.api_kyouka],
-        "exp": [ship.api_exp],
+        "st": ship.api_kyouka,
+        "exp": ship.api_exp,
         "ex": ship.api_slot_ex
     }
 

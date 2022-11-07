@@ -1,6 +1,6 @@
 {
     "name": "poi-plugin-noro6-export",
-    "version": "1.0.2",
+    "version": "1.0.7",
     "main": "main.js",
     "description": "a plugin export ships and equips to noro6",
     "author": {
