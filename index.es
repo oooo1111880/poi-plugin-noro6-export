@@ -23,7 +23,7 @@ const parseShip = (ship) => {
 
 const copyToClipboard = (result) => {
     const content = document.createElement('input'),
-        text = result;
+    text = result;
     document.body.appendChild(content);
     content.value = text;
     content.select();
@@ -90,13 +90,19 @@ export const reactClass = connect(state => ({
         for (let j = 0; j <= len; j++) {
             if (equips[j]) {
                 const equip = equips[j];
-                result += `{"id":${equip.api_slotitem_id},"lv":${equip.api_level}},`
+                if(equip.api_level == undefined) {
+                    result += `{"id":${equip.api_slotitem_id},"lv":0},`
+                }
+                else {
+                    result += `{"id":${equip.api_slotitem_id},"lv":${equip.api_level}},`
+                }
             }
         }
         if (result.charAt(result.length - 1) == ',') {
             result = result.slice(0, result.length - 1)
         }
         result += `]`
+
         this.setState({ result })
 
         copyToClipboard(result)
@@ -117,13 +123,19 @@ export const reactClass = connect(state => ({
                 if (equip.api_locked == "0") {
                     continue;
                 }
-                result += `{"id":${equip.api_slotitem_id},"lv":${equip.api_level}},`
+                if(equip.api_level == undefined) {
+                    result += `{"id":${equip.api_slotitem_id},"lv":0},`
+                }
+                else {
+                    result += `{"id":${equip.api_slotitem_id},"lv":${equip.api_level}},`
+                }
             }
         }
         if (result.charAt(result.length - 1) == ',') {
             result = result.slice(0, result.length - 1)
         }
         result += `]`
+
         this.setState({ result })
 
         copyToClipboard(result)
