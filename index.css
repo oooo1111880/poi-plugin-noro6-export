@@ -1,0 +1,42 @@
+h2 {
+    font-size: 24px;
+}
+
+h4 {
+    font-size: 18px;
+    margin-top: 15px;
+}
+
+.buttonGroup {
+    display: flex;
+    align-items: center;
+}
+
+.openNewPageButton {
+    width: 80%;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+
+.customButton {
+    display: inline-block;
+    width: 40%;
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.groups {
+    width: 40%;
+    margin: 5px;
+}
+
+.mergin {
+    margin-left: 5px;
+}
